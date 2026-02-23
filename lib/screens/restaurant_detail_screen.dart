@@ -119,9 +119,7 @@ Column(
                     ),
                   ),
 
-                  ...restaurant.foods.map(
-                          (food) => Text("• $food")
-                  ),
+                  ...restaurant.foods.map((food) => Text("• ${food.name}")).toList(),
 
                   SizedBox(height: 16),
 
@@ -133,9 +131,7 @@ Column(
                     ),
                   ),
 
-                  ...restaurant.drinks.map(
-                          (drink) => Text("• $drink")
-                  ),
+                  ...restaurant.drinks.map((drink) => Text("• ${drink.name}")).toList(),
                   SizedBox(height: 20),
 
 Text(

@@ -1,13 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import '../models/restaurant.dart';
 import '../services/api_service.dart';
 import 'restaurant_provider.dart';
 
 
 class SearchProvider extends ChangeNotifier {
-
+ 
   final ApiService apiService;
 
   SearchProvider(this.apiService);
