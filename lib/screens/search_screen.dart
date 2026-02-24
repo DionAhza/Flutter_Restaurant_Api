@@ -15,9 +15,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
-  final TextEditingController _controller =
-      TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void dispose() {
@@ -27,80 +25,44 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
-
       create: (_) => SearchProvider(ApiService()),
-
       child: Builder(
         builder: (context) {
-
           return Scaffold(
-
             appBar: AppBar(
               title: const Text("Search Restaurant"),
             ),
-
             body: Column(
-
               children: [
-
                 Padding(
-
                   padding: const EdgeInsets.all(16),
-
                   child: TextField(
-
                     controller: _controller,
-
                     decoration: const InputDecoration(
                       hintText: "Search restaurant...",
                       prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(),
                     ),
-
                     onChanged: (value) {
-
-                      context
-                          .read<SearchProvider>()
-                          .searchRealtime(value);
-
+                      context.read<SearchProvider>().searchRealtime(value);
                     },
-
                   ),
-
                 ),
-
                 Expanded(
-
                   child: Consumer<SearchProvider>(
-
-                    builder:
-                        (context, provider, child) {
-
-                      if (provider.state ==
-                          ResultState.loading) {
-
-                        return  LoadingWidget();
-
+                    builder: (context, provider, child) {
+                      if (provider.state == ResultState.loading) {
+                        return LoadingWidget();
                       }
 
-                      if (provider.state ==
-                          ResultState.hasData) {
-
+                      if (provider.state == ResultState.hasData) {
                         return ListView.builder(
-
-                          itemCount:
-                              provider.restaurants.length,
-
-                          itemBuilder:
-                              (context, index) {
-
-                            final restaurant =
-                                provider.restaurants[index];
+                          itemCount: provider.restaurants.length,
+                          itemBuilder: (context, index) {
+                            final restaurant = provider.restaurants[index];
 
                             return ListTile(
-
                               leading: Hero(
                                 tag: restaurant.id,
                                 child: Image.network(
@@ -108,72 +70,40 @@ class _SearchScreenState extends State<SearchScreen> {
                                   width: 60,
                                 ),
                               ),
-
-                              title:
-                                  Text(restaurant.name),
-
-                              subtitle:
-                                  Text(restaurant.city),
-
+                              title: Text(restaurant.name),
+                              subtitle: Text(restaurant.city),
                               onTap: () {
-
                                 Navigator.push(
-
                                   context,
-
                                   MaterialPageRoute(
-
-                                    builder: (_) =>
-                                        RestaurantDetailScreen(
+                                    builder: (_) => RestaurantDetailScreen(
                                       id: restaurant.id,
                                     ),
-
                                   ),
-
                                 );
-
                               },
-
                             );
-
                           },
-
                         );
-
                       }
 
-                      if (provider.state ==
-                          ResultState.noData) {
-
+                      if (provider.state == ResultState.noData) {
                         return Center(
-                          child:
-                              Text(provider.message),
+                          child: Text(provider.message),
                         );
-
                       }
 
                       return const Center(
-                        child: Text(
-                            "Start typing to search"),
+                        child: Text("Start typing to search"),
                       );
-
                     },
-
                   ),
-
                 ),
-
               ],
-
             ),
-
           );
-
         },
       ),
-
     );
-
   }
-
 }

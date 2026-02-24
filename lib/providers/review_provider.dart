@@ -3,7 +3,6 @@ import '../services/api_service.dart';
 import 'restaurant_provider.dart';
 
 class ReviewProvider extends ChangeNotifier {
-
   final ApiService apiService;
 
   ReviewProvider(this.apiService);
@@ -21,9 +20,7 @@ class ReviewProvider extends ChangeNotifier {
     required String name,
     required String review,
   }) async {
-
     try {
-
       _state = ResultState.loading;
       notifyListeners();
 
@@ -34,16 +31,11 @@ class ReviewProvider extends ChangeNotifier {
       );
 
       _state = ResultState.hasData;
-
     } catch (e) {
-
       _state = ResultState.error;
       _message = "Gagal mengirim review";
-
     }
 
     notifyListeners();
-
   }
-
 }

@@ -5,13 +5,12 @@ import '../services/api_service.dart';
 import 'restaurant_provider.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {
-
   final ApiService apiService;
   final String id;
 
   RestaurantDetailProvider(
-      this.apiService,
-      this.id,
+    this.apiService,
+    this.id,
   ) {
     fetchDetail();
   }
@@ -23,26 +22,18 @@ class RestaurantDetailProvider extends ChangeNotifier {
   String message = "";
 
   Future<void> fetchDetail() async {
-
     try {
-
       state = ResultState.loading;
       notifyListeners();
 
-      restaurant =
-          await apiService.fetchDetail(id);
+      restaurant = await apiService.fetchDetail(id);
 
       state = ResultState.hasData;
-
     } catch (e) {
-
       state = ResultState.error;
       message = e.toString();
-
     }
 
     notifyListeners();
-
   }
-
 }
