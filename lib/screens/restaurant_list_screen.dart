@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_dicoding/screens/favorite_screen.dart';
+import 'package:restaurant_dicoding/screens/settings_screen.dart';
 
 import '../providers/theme_provider.dart';
 import 'search_screen.dart';
@@ -11,19 +13,20 @@ class RestaurantListScreen extends StatefulWidget {
   const RestaurantListScreen({super.key});
   @override
   State<RestaurantListScreen> createState() => _RestaurantListScreenState();
+
 }
 
 class _RestaurantListScreenState extends State<RestaurantListScreen> {
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
+    
+    Future.microtask(() {
+      if (!mounted) return;
 
-  Future.microtask(() {
-    if (!mounted) return;
-
-    context.read<RestaurantProvider>().fetchRestaurants();
-  });
-}
+      context.read<RestaurantProvider>().fetchRestaurants();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,34 @@ void initState() {
       appBar: AppBar(
         title: Text("Restaurant App"),
         actions: [
+           IconButton(
+      icon: const Icon(Icons.settings),
+
+      onPressed: () {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const SettingsScreen(),
+          ),
+        );
+
+      },
+    ),
+          
+          IconButton(
+      icon: const Icon(Icons.favorite),
+      onPressed: () {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const FavoriteScreen(),
+          ),
+        );
+      },
+    ),
+          
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -52,6 +83,7 @@ void initState() {
                     onChanged: themeProvider.toggleTheme,
                   ),
                   Icon(Icons.dark_mode),
+                  
                 ],
               );
             },

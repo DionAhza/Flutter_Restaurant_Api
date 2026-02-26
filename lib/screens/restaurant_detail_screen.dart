@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
+import '../models/favorite_restaurant.dart';
+
 
 import '../providers/restaurant_detail_provider.dart';
 import '../providers/restaurant_provider.dart';
@@ -21,8 +24,62 @@ class RestaurantDetailScreen extends StatelessWidget {
       create: (_) => RestaurantDetailProvider(ApiService(), id),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Detail Restaurant"),
-        ),
+  title: Text("Detail Restaurant"),
+  actions: [
+
+    Consumer2<RestaurantDetailProvider, FavoriteProvider>(
+      builder: (context, detailProvider, favoriteProvider, child) {
+
+        if (detailProvider.state != ResultState.hasData) {
+          return SizedBox();
+        }
+
+        final restaurant = detailProvider.restaurant;
+
+        return FutureBuilder(
+          future: favoriteProvider.checkFavorite(restaurant.id),
+          builder: (context, snapshot) {
+
+            final isFav = favoriteProvider.isFavorite;
+
+            return IconButton(
+
+              icon: Icon(
+                isFav ? Icons.favorite : Icons.favorite_border,
+                color: const Color.fromARGB(255, 255, 17, 0),
+              ),
+
+              onPressed: () async {
+
+                if (isFav) {
+
+                  await favoriteProvider.removeFavorite(restaurant.id);
+
+                } else {
+
+                  await favoriteProvider.addFavorite(
+                    FavoriteRestaurant(
+                      id: restaurant.id,
+                      name: restaurant.name,
+                      city: restaurant.city,
+                      pictureId: restaurant.pictureId,
+                      rating: restaurant.rating,
+                    ),
+                  );
+
+                }
+
+                await favoriteProvider.checkFavorite(restaurant.id);
+
+              },
+            );
+          },
+        );
+      },
+    ),
+
+  ],
+),
         body: Consumer<RestaurantDetailProvider>(
           builder: (context, provider, child) {
             if (provider.state == ResultState.loading) {
@@ -39,6 +96,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                       "https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}",
                     ),
                   ),
+                 
                   SizedBox(height: 16),
                   Text(
                     restaurant.name,
@@ -63,12 +121,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                     "Customer Reviews",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  // ...restaurant.customerReviews.map(
-                  //   (review) => ListTile(
-                  //     title: Text(review.name),
-                  //     subtitle: Text(review.review),
-                  //   ),
-                  // ),
+                  
                   SizedBox(height: 8),
                   Column(
                     children: restaurant.customerReviews.map<Widget>((review) {
@@ -88,9 +141,8 @@ class RestaurantDetailScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ...restaurant.foods
-                      .map((food) => Text("• ${food.name}")),
-                      // .toList(),
+                  ...restaurant.foods.map((food) => Text("• ${food.name}")),
+                  // .toList(),
                   SizedBox(height: 16),
                   Text(
                     "Drinks",
@@ -99,9 +151,8 @@ class RestaurantDetailScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ...restaurant.drinks
-                      .map((drink) => Text("• ${drink.name}")),
-                      // .toList(),
+                  ...restaurant.drinks.map((drink) => Text("• ${drink.name}")),
+                  // .toList(),
                   SizedBox(height: 20),
                   Text(
                     "Add Review",

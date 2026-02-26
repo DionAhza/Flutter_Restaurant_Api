@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/restaurant_provider.dart';
+
 import '../providers/review_provider.dart';
+import '../providers/restaurant_detail_provider.dart';
+import '../providers/restaurant_provider.dart';  
 import '../services/api_service.dart';
 
 class ReviewForm extends StatefulWidget {
@@ -25,6 +27,41 @@ class _ReviewFormState extends State<ReviewForm> {
     nameController.dispose();
     reviewController.dispose();
     super.dispose();
+  }
+
+  Future<void> _submitReview(BuildContext context) async {
+    final reviewProvider = context.read<ReviewProvider>();
+    final detailProvider = context.read<RestaurantDetailProvider>();
+    final messenger = ScaffoldMessenger.of(context);
+
+    try {
+      await reviewProvider.postReview(
+        id: widget.restaurantId, // FIXED
+        name: nameController.text,
+        review: reviewController.text,
+      );
+
+      if (!mounted) return;
+
+      detailProvider.fetchDetail();
+
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text("Review berhasil ditambahkan"),
+        ),
+      );
+
+      nameController.clear();
+      reviewController.clear();
+    } catch (e) {
+      if (!mounted) return;
+
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text("Gagal mengirim review. Periksa koneksi internet."),
+        ),
+      );
+    }
   }
 
   @override
@@ -58,33 +95,12 @@ class _ReviewFormState extends State<ReviewForm> {
                 child: ElevatedButton(
                   onPressed: provider.state == ResultState.loading
                       ? null
-                      : () async {
-                          await provider.postReview(
-                            id: widget.restaurantId,
-                            name: nameController.text,
-                            review: reviewController.text,
-                          );
-
-                          if (!mounted) return;
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                "Review berhasil ditambahkan",
-                              ),
-                            ),
-                          );
-
-                          nameController.clear();
-                          reviewController.clear();
-                        },
+                      : () => _submitReview(context),
                   child: provider.state == ResultState.loading
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Text("Submit Review"),
                 ),
