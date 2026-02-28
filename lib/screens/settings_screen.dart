@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_dicoding/services/notification_service.dart';
 
 import '../providers/theme_provider.dart';
 import '../providers/reminder_provider.dart';
@@ -53,6 +54,12 @@ class SettingsScreen extends StatelessWidget {
             },
 
           ),
+          ElevatedButton(
+    onPressed: () async {
+      await NotificationService.showNotification();
+        },
+       child: const Text("Test Notification"),
+      )
 
         ],
 

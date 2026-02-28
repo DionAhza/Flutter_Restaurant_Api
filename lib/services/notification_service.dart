@@ -8,6 +8,7 @@ class NotificationService {
       flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  /// INIT (dipanggil di main)
   static Future<void> init() async {
 
     tz.initializeTimeZones();
@@ -21,6 +22,28 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initSettings);
   }
 
+  /// SHOW NOTIFICATION (dipakai WorkManager)
+  static Future<void> showNotification() async {
+
+    const NotificationDetails notificationDetails =
+        NotificationDetails(
+      android: AndroidNotificationDetails(
+        'daily_reminder_channel',
+        'Daily Reminder',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      "Waktunya Makan Siang 🍽️",
+      "Jangan lupa cek restaurant favorit kamu!",
+      notificationDetails,
+    );
+  }
+
+  /// SCHEDULE NOTIFICATION (tanpa WorkManager)
   static Future<void> scheduleDailyReminder() async {
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -50,7 +73,7 @@ class NotificationService {
   }
 
   static Future<void> cancelReminder() async {
-    await flutterLocalNotificationsPlugin.cancel(0);
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   static tz.TZDateTime _nextInstanceOf11AM() {
@@ -64,14 +87,12 @@ class NotificationService {
             now.year,
             now.month,
             now.day,
-            now.hour,
-            now.minute,
-            now.second + 10
-            );
+            11);
 
     if (scheduledDate.isBefore(now)) {
       scheduledDate =
-          scheduledDate.add(const Duration(days: 1));
+          scheduledDate.add(const Duration(minutes: 15));
+          
     }
 
     return scheduledDate;
