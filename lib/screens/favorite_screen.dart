@@ -9,15 +9,12 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Favorite Restaurants"),
       ),
-
       body: Consumer<FavoriteProvider>(
         builder: (context, provider, child) {
-
           /// loading awal
           if (provider.favorites.isEmpty) {
             return const Center(
@@ -28,28 +25,21 @@ class FavoriteScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: provider.favorites.length,
             itemBuilder: (context, index) {
-
               final restaurant = provider.favorites[index];
 
               return Card(
                 margin: const EdgeInsets.all(8),
-
                 child: ListTile(
-
                   leading: Image.network(
                     "https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}",
                     width: 60,
                     fit: BoxFit.cover,
                   ),
-
                   title: Text(restaurant.name),
-
                   subtitle: Text(
                     "${restaurant.city} • ⭐ ${restaurant.rating}",
                   ),
-
                   onTap: () {
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -58,15 +48,11 @@ class FavoriteScreen extends StatelessWidget {
                         ),
                       ),
                     );
-
                   },
-
                 ),
               );
-
             },
           );
-
         },
       ),
     );

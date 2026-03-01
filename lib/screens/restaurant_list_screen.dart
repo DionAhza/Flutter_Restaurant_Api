@@ -13,14 +13,13 @@ class RestaurantListScreen extends StatefulWidget {
   const RestaurantListScreen({super.key});
   @override
   State<RestaurantListScreen> createState() => _RestaurantListScreenState();
-
 }
 
 class _RestaurantListScreenState extends State<RestaurantListScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     Future.microtask(() {
       if (!mounted) return;
 
@@ -34,34 +33,28 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
       appBar: AppBar(
         title: Text("Restaurant App"),
         actions: [
-           IconButton(
-      icon: const Icon(Icons.settings),
-
-      onPressed: () {
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const SettingsScreen(),
-          ),
-        );
-
-      },
-    ),
-          
           IconButton(
-      icon: const Icon(Icons.favorite),
-      onPressed: () {
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const FavoriteScreen(),
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
+            },
           ),
-        );
-      },
-    ),
-          
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const FavoriteScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -83,7 +76,6 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                     onChanged: themeProvider.toggleTheme,
                   ),
                   Icon(Icons.dark_mode),
-                  
                 ],
               );
             },

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/review_provider.dart';
 import '../providers/restaurant_detail_provider.dart';
-import '../providers/restaurant_provider.dart';  
+import '../providers/restaurant_provider.dart';
 import '../services/api_service.dart';
 
 class ReviewForm extends StatefulWidget {

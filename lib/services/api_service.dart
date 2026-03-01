@@ -11,7 +11,6 @@ import '../models/restaurant_search_result.dart';
 class ApiService {
   static const baseUrl = 'https://restaurant-api.dicoding.dev';
 
-  
   Future<List<Restaurant>> fetchRestaurants() async {
     try {
       final response = await http
@@ -26,21 +25,16 @@ class ApiService {
       } else {
         throw Exception("Server error: ${response.statusCode}");
       }
-
     } on SocketException {
       throw Exception("Tidak ada koneksi internet");
-
     } on TimeoutException {
       throw Exception("Koneksi timeout");
-
     } catch (e) {
       throw Exception("Error fetchRestaurants: $e");
     }
   }
 
- 
   Future<RestaurantDetail> fetchDetail(String id) async {
-    
     try {
       final response = await http
           .get(Uri.parse("$baseUrl/detail/$id"))
@@ -53,19 +47,15 @@ class ApiService {
       } else {
         throw Exception("Server error: ${response.statusCode}");
       }
-
     } on SocketException {
       throw Exception("Tidak ada koneksi internet");
-
     } on TimeoutException {
       throw Exception("Koneksi timeout");
-
     } catch (e) {
       throw Exception("Error fetchDetail: $e");
     }
   }
 
-  
   Future<RestaurantSearchResult> searchRestaurants(String query) async {
     try {
       final response = await http
@@ -79,19 +69,15 @@ class ApiService {
       } else {
         throw Exception("Server error: ${response.statusCode}");
       }
-
     } on SocketException {
       throw Exception("Tidak ada koneksi internet");
-
     } on TimeoutException {
       throw Exception("Koneksi timeout");
-
     } catch (e) {
       throw Exception("Error searchRestaurants: $e");
     }
   }
 
- 
   Future<void> postReview({
     required String id,
     required String name,
@@ -115,13 +101,10 @@ class ApiService {
       if (response.statusCode != 201) {
         throw Exception("Gagal mengirim review");
       }
-
     } on SocketException {
       throw Exception("Tidak ada koneksi internet");
-
     } on TimeoutException {
       throw Exception("Koneksi timeout");
-
     } catch (e) {
       throw Exception("Error postReview: $e");
     }
