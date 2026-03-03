@@ -24,6 +24,13 @@ void main() {
     rating: 4.5,
   );
 
+
+  test('Initial state should be loading', () {
+    expect(provider.state, ResultState.loading);
+    expect(provider.restaurants.isEmpty, true);
+    expect(provider.message, "");
+  });
+  
   test('Should return list of restaurants when API call successful', () async {
     when(mockApiService.fetchRestaurants())
         .thenAnswer((_) async => [fakeRestaurant]);
